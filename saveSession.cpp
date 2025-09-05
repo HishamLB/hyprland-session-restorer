@@ -20,27 +20,21 @@ int checkIfAppOpen();
 string find_in_path(const std::string& app);
 int main(){
 
-
-   restore();
-
-
-
+    restore();
     return 0;
 }
 
 void dispatch(int workspace, string application){
     int before = checkIfAppOpen();
-    string moveCommand = "hyprctl dispatch workspace " + to_string(workspace);
-    system(moveCommand.c_str());
-    sleep(1);
+    sleep(2);
 
     
+    string command = "hyprctl dispatch exec \"[workspace " + std::to_string(workspace) + " silent] " + application + "\"";
 
-    string command = "hyprctl dispatch exec " + application;
     cout << command << endl;
     system(command.c_str());
     
-    sleep(1);
+    sleep(2);
     int after = checkIfAppOpen();
     
 
@@ -50,7 +44,7 @@ void dispatch(int workspace, string application){
             system("hyprctl dispatch exec \"libreoffice --impress\" ");
         cout << "Trying..";
         string path = find_in_path(application);
-        string pathCommand = "hyprctl dispatch exec \"" + path + "\"";
+        string pathCommand = "hyprctl dispatch exec \"[workspace " +to_string(workspace) + " silent] " + path + "\"";
         cout << "hyprctl dispatch exec \"" + path + "\"";
         
         system(pathCommand.c_str());
