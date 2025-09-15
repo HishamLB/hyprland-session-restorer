@@ -19,12 +19,11 @@ void restore();
 int checkIfAppOpen();
 string find_in_path(const std::string& app);
 int main(){
-
-    restore();
+    save();
     return 0;
 }
 
-void dispatch(int workspace, string application){
+void dispatch(int workspace, string application, int monitor){
     int before = checkIfAppOpen();
     sleep(2);
 
@@ -49,7 +48,10 @@ void dispatch(int workspace, string application){
         
         system(pathCommand.c_str());
     }
-
+    string monitorCommand; 
+    cout << "Moving to monitor, " << monitor << endl;
+    monitorCommand = "hyprctl dispatch moveworkspacetomonitor " + to_string(workspace) + " " + to_string(monitor);
+    system(monitorCommand.c_str());
 }
 std::string shell_escape_spaces(const std::string& path) {
     std::string escaped;
@@ -105,16 +107,16 @@ void restore() {
         lines.push_back(line);
     }
 
-    int workspace;
+    int workspace, monitor;
     string application;
     int x;
     for(x = 0; x < lines.size() - 1; x=x+26){
 
         workspace =  stoi(lines[x+5].substr(12,1));
-
+        monitor = stoi(lines[x+8].substr(9));
         application = lines[x+9].substr(8);
         cout << "dispatching: " << application << endl;
-        dispatch(workspace,application);
+        dispatch(workspace, application, monitor);
     }
 
 }
@@ -132,8 +134,4 @@ void save(){
     }
     writeFile << clients;
     writeFile.close();
-
-
-
-
 }
