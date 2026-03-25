@@ -1,3 +1,5 @@
+RETIRED until Vaxry stops changing how stuff works for a bit.
+
 # Hyprland Session Restorer
 
 This is a little project I'm working on to familiarize myself with shell and a bit of hyprland. NO guarantees this will work.
